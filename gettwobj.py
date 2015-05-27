@@ -26,3 +26,19 @@ def get_tweet(twID):
     t_tweet_lookup = api.get_status(twID)
     return t_tweet_lookup
 
+def get_user_json(screen_name):
+    auth = tweepy.OAuthHandler(apiConsumerKey, apiConsumerSecret)
+    auth.set_access_token(apiAccessToken, apiAccessTokenSecret)
+    api = tweepy.API(auth)
+
+    t_user_lookup = api.get_user(screen_name)
+    return t_user_lookup._json
+
+def get_tweet_json(twID):
+    auth = tweepy.OAuthHandler(apiConsumerKey, apiConsumerSecret)
+    auth.set_access_token(apiAccessToken, apiAccessTokenSecret)
+    api = tweepy.API(auth)
+
+    t_tweet_lookup = api.get_status(twID)
+    return t_tweet_lookup._json
+
