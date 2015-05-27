@@ -1,7 +1,7 @@
 {
 	"apiConsumerKey":        "aaaaaaaaaaaaaaaaaaaaaaaaa",
 	"apiConsumerSecret":     "bbbbbbbbbbbbbbbbbbbbbbbb",
-	"apiAccessToken":  "     "ccccccccccccccccccccccccc",
+	"apiAccessToken":        "ccccccccccccccccccccccccc",
 	"apiAccessTokenSecret":  "ddddddddddddd-eeeeeeeeee"
 }
 
