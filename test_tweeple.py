@@ -103,4 +103,7 @@ for testTweet in testingTweets:
 testUserName = 'packetdev'
 do_user_stuff(testUserName)
 
+# To get last set of tweets:
+# timeline = gettwobj.get_user_timeline(tUserName)
+
 
