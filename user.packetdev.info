@@ -1,0 +1,11 @@
+Display name:         packet dev
+User name:            packetdev
+User ID:              3293607647
+Descirption:          This is my bio. There are many like it but this one MIGHT be mine.
+Created:              Fri May 22 02:46:18 +0000 2015
+User time zone:       UTC
+Home page (short):    http://t.co/FJ9yZ7nz5e
+Last tweet ID:        603740734420885504
+Last tweet text:      Ain't gonna do one more tweet without checking my API!
+
+All keys:       [u'follow_request_sent', u'profile_use_background_image', u'profile_text_color', u'default_profile_image', u'suspended', u'id', u'profile_background_image_url_https', u'verified', u'profile_location', u'profile_image_url_https', u'profile_sidebar_fill_color', u'entities', u'followers_count', u'profile_sidebar_border_color', u'id_str', u'profile_background_color', u'needs_phone_verification', u'listed_count', u'status', u'is_translation_enabled', u'utc_offset', u'statuses_count', u'description', u'friends_count', u'location', u'profile_link_color', u'profile_image_url', u'following', u'geo_enabled', u'profile_background_image_url', u'name', u'lang', u'profile_background_tile', u'favourites_count', u'screen_name', u'notifications', u'url', u'created_at', u'contributors_enabled', u'time_zone', u'protected', u'default_profile', u'is_translator']
