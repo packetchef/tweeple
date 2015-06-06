@@ -19,8 +19,8 @@ def do_tweet_stuff(tweetID):
     difference, as while the output may look the same the behavior can vary.
     """
     jTweet = gettwobj.get_tweet_json(tweetID)
-    jTweetFileName = 'tweet.' + str(tweetID) + '.json'
-    with open(os.path.basename(jTweetFileName), 'wb') as file:
+    jTweetFileName = 'tests/tweet.' + str(tweetID) + '.json'
+    with open(os.path.abspath(jTweetFileName), 'wb') as file:
         file.write(json.dumps(jTweet))
     print('Created tweet file in JSON format: {0}'.format(jTweetFileName))
     
@@ -53,8 +53,8 @@ def do_tweet_stuff(tweetID):
     	tweetLocation_C02 = 'geolocation not enabled'
     	tweetLocation_C03 = 'geolocation not enabled'
     
-    jTweetInfoFileName = 'tweet.' + str(tweetID) + '.info'
-    with open(os.path.basename(jTweetInfoFileName), 'wb') as file:
+    jTweetInfoFileName = 'tests/tweet.' + str(tweetID) + '.info'
+    with open(os.path.abspath(jTweetInfoFileName), 'wb') as file:
     	file.write('Text:           ' + tweetText + '\n')
     	file.write('Hashtags:       ' + tweetHashtags + '\n')
     	file.write('Location:       ' + tweetLocation + '\n')
@@ -72,8 +72,8 @@ def do_tweet_stuff(tweetID):
 
 def do_user_stuff(tUserName):
     jUser = gettwobj.get_user_json(tUserName)
-    jUserFileName = 'user.' + tUserName + '.json'
-    with open(os.path.basename(jUserFileName), 'wb') as file:
+    jUserFileName = 'tests/user.' + tUserName + '.json'
+    with open(os.path.abspath(jUserFileName), 'wb') as file:
     	file.write(json.dumps(jUser))
     print('Created user file in JSON format: {0}'.format(jUserFileName))
     
@@ -91,8 +91,8 @@ def do_user_stuff(tUserName):
     uLastTweetID = jUser['status']['id_str']
     uLastTweetText = jUser['status']['text']
     
-    jUserInfoFileName = 'user.' + tUserName + '.info'
-    with open(os.path.basename(jUserInfoFileName), 'wb') as file:
+    jUserInfoFileName = 'tests/user.' + tUserName + '.info'
+    with open(os.path.abspath(jUserInfoFileName), 'wb') as file:
     	file.write('Display name:         ' + uDisplayName + '\n')
     	file.write('User name:            ' + uUserName + '\n')
     	file.write('User ID:              ' + uUserID + '\n')
@@ -111,17 +111,27 @@ def do_user_stuff(tUserName):
 
 
 def do_timeline_stuff(tUserName):
+    """
+    Remember that while a result set of Status objects does not have a ._json
+    property, the individual Status objects do, should you prefer.
+    """
     tTimeline = gettwobj.get_user_timeline(tUserName)
-    tTimelineFileName = 'timeline.' + tUserName + '.info'
-    with open(os.path.basename(tTimelineFileName), 'wb') as file:
+    tTimelineFileName = 'tests/timeline.' + tUserName + '.info'
+    with open(os.path.abspath(tTimelineFileName), 'wb') as file:
         file.write('Last status messages for ' + tUserName + '\n')
         for status in tTimeline:
             tStatusID = str(status.id)
             tStatusCreatedAt = str(status.created_at)
             tStatusText = status.text
+            if status.place:
+                tStatusPlace = status.place.full_name
+            else:
+                tStatusPlace = 'no geolocation'
+
             file.write('ID:        ' + tStatusID + '\n')
             file.write('Created:   ' + tStatusCreatedAt + '\n')
             file.write('Text:      ' + tStatusText + '\n')
+            file.write('Place:     ' + tStatusPlace + '\n')
             file.write('\n')
 
 

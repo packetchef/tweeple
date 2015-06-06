@@ -9,7 +9,7 @@ TO DO
 REFERENCES
 Tweepy API: http://docs.tweepy.org/en/latest/api.html
 """
-with open(os.path.basename('tweeple.keys'), 'r') as file:
+with open(os.path.basename('keys'), 'r') as file:
         tweepleKeyData = json.load(file)
 
 apiConsumerKey = tweepleKeyData['apiConsumerKey']

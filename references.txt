@@ -4,11 +4,6 @@ Startup:
 copy tweeple.keys.real to tweeple.keys when running
 copy tweeple.keys.fake to tweeple.keys before committing
 
-git refs:
-git add <filename> or git add .
-git commit -m 'comment'
-git push
-
 
 Miscellaneous API links
 urlT01 = 'https://api.twitter.com/1.1/statuses/show/601582876170264576.json'
@@ -19,5 +14,7 @@ urlShowUser = 'https://api.twitter.com/1.1/users/show.json?screen_name=packetdev
 urlLookupUser = 'https://api.twitter.com/1.1/users/lookup.json?screen_name=packetdev'
 urlLookupUserMulti = 'https://api.twitter.com/1.1/users/lookup.json?screen_name=packetdev%2Cpacketchef'
 urlLookupUserByID = 'https://api.twitter.com/1.1/users/lookup.json?user_id=packetdev'  # returns 404 if user not found
+
+Tweepy API: http://docs.tweepy.org/en/latest/api.html
 
 
