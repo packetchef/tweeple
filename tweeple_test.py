@@ -137,7 +137,7 @@ def do_timeline_stuff(tUserName):
 
 # one tweet with single hashtag and location
 # one tweet with multiple hashtags and no location 
-testingTweets = 602910280528564225, 603714808731574272
+testingTweets = 602910280528564225, 603714808731574272, 602478575153971200
 for testTweet in testingTweets:
     do_tweet_stuff(testTweet)
 

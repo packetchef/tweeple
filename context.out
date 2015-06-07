@@ -1,0 +1,86 @@
+Target user: packetdev
+Getting tweets:
+607168668972285952
+603740734420885504
+603714808731574272
+602910280528564225
+602478575153971200
+601582876170264576
+-----------------------
+Got tweet: 607168668972285952
+Tweet ID:       607168668972285952
+Text:           What does a #mention look like, like with @packetchef? #FS
+Hashtags:       mention; FS; 
+Location:       geolocation not enabled
+Created:        2015-06-06 12:54:25
+User time zone: UTC
+Screen name:    packetdev
+User ID:        3293607647
+Coordinates 01: geolocation not enabled
+Coordinates 02: geolocation not enabled
+Coordinates 03: geolocation not enabled
+-----------------------
+Got tweet: 603740734420885504
+Tweet ID:       603740734420885504
+Text:           Ain't gonna do one more tweet without checking my API!
+Hashtags:       
+Location:       geolocation not enabled
+Created:        2015-05-28 01:53:02
+User time zone: UTC
+Screen name:    packetdev
+User ID:        3293607647
+Coordinates 01: geolocation not enabled
+Coordinates 02: geolocation not enabled
+Coordinates 03: geolocation not enabled
+-----------------------
+Got tweet: 603714808731574272
+Tweet ID:       603714808731574272
+Text:           Gonna tweet? #hashtag #once #twice #thriceisfourtimes
+Hashtags:       hashtag; once; twice; thriceisfourtimes; 
+Location:       geolocation not enabled
+Created:        2015-05-28 00:10:01
+User time zone: UTC
+Screen name:    packetdev
+User ID:        3293607647
+Coordinates 01: geolocation not enabled
+Coordinates 02: geolocation not enabled
+Coordinates 03: geolocation not enabled
+-----------------------
+Got tweet: 602910280528564225
+Tweet ID:       602910280528564225
+Text:           Twitter. Python. Hennessy. Pineapple. UTC. Chromebook. Northampton. Coding day. #nohashtagshere
+Hashtags:       nohashtagshere; 
+Location:       Northampton, MA
+Created:        2015-05-25 18:53:07
+User time zone: UTC
+Screen name:    packetdev
+User ID:        3293607647
+Coordinates 01: [-72.7298389, 42.28419]
+Coordinates 02: [-72.615605, 42.28419]
+Coordinates 03: [-72.615605, 42.380065]
+-----------------------
+Got tweet: 602478575153971200
+Tweet ID:       602478575153971200
+Text:           Turned on location and changed TZ to UTC!  It's 10:17.
+Hashtags:       
+Location:       Northampton, MA
+Created:        2015-05-24 14:17:40
+User time zone: UTC
+Screen name:    packetdev
+User ID:        3293607647
+Coordinates 01: [-72.7298389, 42.28419]
+Coordinates 02: [-72.615605, 42.28419]
+Coordinates 03: [-72.615605, 42.380065]
+-----------------------
+Got tweet: 601582876170264576
+Tweet ID:       601582876170264576
+Text:           This is my tweet.  There are many like it but this one is mine.  Posted 22:58 Eastern.
+Hashtags:       
+Location:       geolocation not enabled
+Created:        2015-05-22 02:58:29
+User time zone: UTC
+Screen name:    packetdev
+User ID:        3293607647
+Coordinates 01: geolocation not enabled
+Coordinates 02: geolocation not enabled
+Coordinates 03: geolocation not enabled
