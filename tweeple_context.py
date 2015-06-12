@@ -65,7 +65,7 @@ if __name__ == '__main__':
     elif len(sys.argv) > 2:
         sys.exit('Too many arguments')
     else:
-        sys.exit('Missing argument: targetTweet')
+        sys.exit('Missing argument: targetUser')
 
     now = time.time()
     runFileName = targetUserName + format(now, '.0f') + '.out'
