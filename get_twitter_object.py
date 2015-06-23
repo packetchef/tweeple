@@ -136,7 +136,7 @@ if __name__ == '__main__':
     if options.user:
         getUser = options.user
         myUser = doStuff_User(getUser)
-        log(myUser._json)
+        print(myUser._json)
         if options.write:
             outFileName = ''.join([outputDirectory, '/', getUser, '.', 
                 outFileName])
@@ -144,7 +144,7 @@ if __name__ == '__main__':
     elif options.tweet:
         getTweet = options.tweet
         myTweet = doStuff_Tweet(getTweet)
-        log(myTweet._json)
+        print(myTweet._json)
         if options.write:
             outFileName = ''.join([outputDirectory, '/', 'tweet-', getTweet, 
             '.', outFileName])
