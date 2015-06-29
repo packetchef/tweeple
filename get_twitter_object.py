@@ -7,71 +7,67 @@ import optparse
 import time
 import sys
 
+
 def checkKeys(testKeys):
+    # Test routine to validate that the key file provided the required keys
     requiredKeys = ['apiConsumerKey', 'apiConsumerSecret', 'apiAccessToken',
-        'apiAccessTokenSecret']
-    
+                    'apiAccessTokenSecret']
+
     for key in requiredKeys:
         if key not in testKeys:
-            raise ValueError('Key is not set: {0}'.format(key))
+            raise ValueError('Key is not set: {key}'.format(key=key))
     # Assume we can safely return "True" if all required keys are present
     return True
 
 
 def printAllKeys(**kwargs):
     # Test routine to enumerate the keys
-    # Call with: printALlKeys(**keys)
+    # Call with: printAllKeys(**keys)
     for name, value in kwargs.items():
-        log('{0} :: {1}'.format(name, value), 'debug')
-
-
-def showUsage():
-    usageText = (
-        'usage: get_twitter_object.py [ [-t | --tweet] tweet | [-u | --user]'
-        'username ] [ [-k | --keyfile] keyfile ] [ [-w | --write ] target ]\n'
-        'Options and arguments:\n'
-        '-t tweet, --tweet tweet       : tweet/status ID\n'
-        '-u username, --user username  : username\n'
-        '-k keyfile, --keyfile keyfile : keyfile (defaults to ./keys)\n'
-        '-w target, --write target     : target directory for writing output\n'
-        '\n'
-        'You must choose to search for either a tweet ID or a username.\n'
-        'keyfile is optional and defaults to \'keys.conf\' in the current\n' 
-        'directory.\n'
-        '\n'
-        )
-    print(usageText)
-    sys.exit(1)
+        print('{name} :: {value}'.format(name=name, value=value))
 
 
 def log(msg, sev='low'):
-    if sev == 'debug':
-        print('{0} :: {1}'.format(sev, msg))
+    # For now, debug will write to stdout and everything else does nothing
+    if sev == 'debug' or sev == 'crit':
+        print('[*] {log_message}'.format(log_message=msg))
     else:
         # Build out some sort of log facility later
         pass
 
-def doStuff_User(twUser):
-    log('Get a user: {0}'.format(twUser))
+
+def doStuff_User(twUser, twApi):
+    # Wrapper to API call to retrieve a tweepy user object
+    if debug:
+        log('Get a user: {user}'.format(user=twUser), 'debug')
     try:
-        user = api.get_user(twUser)
+        user = twApi.get_user(twUser)
         return user
     except Exception as e:
-        log('Failed to get user: {0}'.format(e.message), 'debug')
+        log('Failed to get user: {exc_msg}'.format(exc_msg=e.message), 'crit')
         sys.exit(1)
 
 
-def doStuff_Tweet(twTweet):
-    log('Get a tweet: {0}'.format(twTweet))
+def doStuff_Tweet(twTweet, twApi):
+    # Wrapper to API call to retrieve tweepy status object (aka tweet)
+    if debug:
+        log('Get a tweet: {tweet}'.format(tweet=twTweet), 'debug')
     try:
-        tweet = api.get_status(twTweet)
+        tweet = twApi.get_status(twTweet)
         return tweet
     except Exception as e:
-        log('Failed to get tweet: {0}'.format(e.message), 'debug')
+        log('Failed to get tweet: {exc_msg}'.format(exc_msg=e.message), 'crit')
         sys.exit(1)
 
 
 def writeObjectJSON(outFile, twData):
+    '''
+    Simply, take a JSON dictionary and write it to a file.  This assumes that
+    the caller took a tweepy user object and is sending the _json property.
+    '''
+    if debug:
+        log('Writing object to file: {outFile}'.format(outFile=outFile),
+            'debug')
     try:
         with open(os.path.abspath(outFile), 'w') as file:
             if isinstance(twData, dict):
@@ -79,26 +75,55 @@ def writeObjectJSON(outFile, twData):
             else:
                 file.write(twData)
     except IOError as e:
-        log('Unable to write outFile {0}: {1}'.format(outFile, e.message), 
-            'debug')    
+        log('Unable to write outFile {outFile}: {exc_msg}'
+            .format(outFile=outFile, exc_msg=os.strerror(e.errno)), 'crit')
 
 
-if __name__ == '__main__':
+def main(argv):
+    # not really sure if this should be defined here or top of the file
+    global debug
     now = time.time()
-    
-    optionParser = optparse.OptionParser()
+
+    progDesc = (
+        'The get_twitter_object fetches a twitter user profile or'
+        'tweet ("status").  The results are written to stdout and optionally '
+        'to an auto-generated file in a specified directory.  When running '
+        '%prog, you must specify whether you are searching for a user or a '
+        'tweet.  Optional arguments include the path to your API key file and '
+        'path to a directory where you want to write object output.'
+    )
+
+    optionParser = optparse.OptionParser(usage='Usage: %prog [options]',
+                                         description=progDesc)
+    optionParser.add_option('-d', '--debug', action='store_true', dest='debug',
+                            help='Enable debug mode', default=False)
     optionParser.add_option('-k', '--keyfile', action='store',
-        default='keys.conf')
-    optionParser.add_option('-u', '--user', action='store')
-    optionParser.add_option('-t', '--tweet', action='store')
-    optionParser.add_option('-w', '--write', action='store')
-    options, remainder = optionParser.parse_args()
+                            help='Location of key file, default is keys.conf',
+                            default='keys.conf')
+    optionParser.add_option('-u', '--user', action='store',
+                            help='Lookup user name (will change to '
+                            'ID/username/screen name later)')
+    optionParser.add_option('-t', '--tweet', action='store',
+                            help='Lookup tweet status ID')
+    optionParser.add_option('-w', '--write', action='store',
+                            help='Directory for writing output (sorry, '
+                            'filenames not configurable)')
+
+    (options, args) = optionParser.parse_args()
+
+    if options.debug:
+        log('Debug mode enabled', 'debug')
+        debug = True
+    else:
+        debug = False
 
     # Must select EITHER user OR tweet, but not both
     if not options.user and not options.tweet:
-        showUsage()
+        optionParser.print_help()
+        sys.exit(1)
     if options.user and options.tweet:
-        showUsage()
+        optionParser.print_help()
+        sys.exit(1)
 
     # Let's try to load our keyfile and verify we have all required keys
     try:
@@ -106,11 +131,11 @@ if __name__ == '__main__':
             tweepleKeyData = json.load(file)
     except IOError as e:
         if e.errno == 2:
-            log('Unable to open keyfile {0}'.format(options.keyfile), 'debug')
+            log('Unable to open keyfile {f}'.format(f=options.keyfile), 'crit')
             sys.exit(1)
         else:
-            log('IOError when trying to open keyfile {0}' \
-                .format(options.keyfile), 'debug')
+            log('IOError when trying to open keyfile {f}'
+                .format(f=options.keyfile), 'crit')
             sys.exit(1)
 
     try:
@@ -119,14 +144,24 @@ if __name__ == '__main__':
         apiConsumerSecret = tweepleKeyData['apiConsumerSecret']
         apiAccessToken = tweepleKeyData['apiAccessToken']
         apiAccessTokenSecret = tweepleKeyData['apiAccessTokenSecret']
+        if debug:
+            log('apiConsumerKey: {k}'.format(k=apiConsumerKey), 'debug')
+            log('apiConsumerSecret: {k}'.format(k=apiConsumerSecret), 'debug')
+            log('apiAccessToken: {k}'.format(k=apiAccessToken), 'debug')
+            log('apiAccessTokenSecret: {k}'.format(k=apiAccessTokenSecret),
+                'debug')
     except ValueError as e:
-        log('Error while checking keys.  {0}'.format(e.message), 'debug')
+        log('Error while checking keys.  {exc_msg}'.format(exc_msg=e.message),
+            'crit')
         sys.exit(1)
 
     # Build the output filename's suffixes
     if options.write:
         outputDirectory = options.write
-        outFileName = ''.join([format(now, '.0f'), '.out'])
+        outputFileName = ''.join([format(now, '.0f'), '.out'])
+        if debug:
+            log('outputDirectory: {od}'.format(od=outputDirectory), 'debug')
+            log('outputFileName: {of}'.format(of=outputFileName), 'debug')
 
     # Build our tweepy API handler
     auth = tweepy.OAuthHandler(apiConsumerKey, apiConsumerSecret)
@@ -135,18 +170,26 @@ if __name__ == '__main__':
 
     if options.user:
         getUser = options.user
-        myUser = doStuff_User(getUser)
+        if debug:
+            log('Getting user: {user}'.format(user=getUser), 'debug')
+        myUser = doStuff_User(getUser, api)
         print(myUser._json)
         if options.write:
-            outFileName = ''.join([outputDirectory, '/', getUser, '.', 
-                outFileName])
-            writeObjectJSON(outFileName, myUser._json)
+            outputFileName = ''.join([outputDirectory, '/', getUser, '.',
+                                     outputFileName])
+            writeObjectJSON(outputFileName, myUser._json)
     elif options.tweet:
         getTweet = options.tweet
-        myTweet = doStuff_Tweet(getTweet)
+        if debug:
+            log('Getting tweet: {tweet}'.format(tweet=getTweet), 'debug')
+        myTweet = doStuff_Tweet(getTweet, api)
         print(myTweet._json)
         if options.write:
-            outFileName = ''.join([outputDirectory, '/', 'tweet-', getTweet, 
-            '.', outFileName])
-            writeObjectJSON(outFileName, myTweet._json)
+            outputFileName = ''.join([outputDirectory, '/', 'tweet-', getTweet,
+                                     '.', outputFileName])
+            writeObjectJSON(outputFileName, myTweet._json)
+
+
+if __name__ == '__main__':
+    main(sys.argv[1:])
 
